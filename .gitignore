@@ -1,0 +1,9 @@
+.*
+!.gitignore
+el-get/
+eshell/
+/ido.last
+/recentf
+/smex-items
+*.elc
+.cask
