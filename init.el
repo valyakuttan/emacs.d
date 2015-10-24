@@ -1,5 +1,10 @@
 ;; init.el
 
+;; custom initialization
+(load-file "~/.emacs.d/init.d/set-path.el")
+(load-file "~/.emacs.d/init.d/start-emacs.el")
+(load-file "~/.emacs.d/init.d/ido-config.el")
+
 ;;
 ;; el-get
 ;;
@@ -49,8 +54,3 @@
     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))))
 (el-get-bundle json-mode)
 (el-get-bundle web-mode)
-
-
-;; custom features
-(load-file "~/.emacs.d/init.d/start-emacs.el")
-(load-file "~/.emacs.d/init.d/ido-config.el")
