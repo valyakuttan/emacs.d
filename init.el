@@ -1,9 +1,9 @@
 ;; init.el
 
 ;; custom initialization
-(load-file "~/.emacs.d/init.d/set-path.el")
 (load-file "~/.emacs.d/init.d/start-emacs.el")
 (load-file "~/.emacs.d/init.d/ido-config.el")
+(load-file "~/.emacs.d/init.d/set-path.el")
 
 ;;
 ;; el-get

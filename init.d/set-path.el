@@ -1,17 +1,5 @@
 ;; set-path.el
 
-(defun add-to-path-and-exec-path (&rest path-entries)
-  "add path-entries to both PATH and exec-path, if not present."
-  (let* ((new-path (split-string (getenv "PATH") ":"))
-         (add-entry (lambda (e)
-                      (progn
-                        (add-to-list 'new-path e)
-                        (add-to-list 'exec-path e)))))
-    (if path-entries
-        (progn
-          (mapc add-entry path-entries)
-          (setenv "PATH" (mapconcat 'identity new-path ":"))))))
-
 ;;
 ;; set $PATH and exec-path
 ;;
