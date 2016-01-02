@@ -8,7 +8,11 @@
 (setq cabal-bin (concat home "/.cabal/bin"))
 (setq node-bin (concat home "/node_modules/bin"))
 
-(add-to-path-and-exec-path
- ghc-bin
- cabal-bin
- node-bin)
+;;(add-to-path-and-exec-path
+;; ghc-bin
+;; cabal-bin
+;; node-bin)
+
+(setq work-on-home (concat home "/src/venv"))
+(setenv "WORKON_HOME" work-on-home)
+

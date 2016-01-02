@@ -3,7 +3,7 @@
 ;; custom initialization
 (load-file "~/.emacs.d/init.d/start-emacs.el")
 (load-file "~/.emacs.d/init.d/ido-config.el")
-(load-file "~/.emacs.d/init.d/set-path.el")
+(load-file "~/.emacs.d/init.d/set-env.el")
 
 ;;
 ;; el-get
@@ -41,16 +41,20 @@
 
 
 ;; haskell utilities
-(el-get-bundle haskell-mode)
-(el-get-bundle flycheck-haskell
-  (with-eval-after-load-feature 'flycheck
-    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
+;;(el-get-bundle haskell-mode)
+;;(el-get-bundle flycheck-haskell
+;;  (with-eval-after-load-feature 'flycheck
+;;    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
 
 ;; javascript utilities
-(el-get-bundle js2-mode
-  (progn
-    (autoload 'js2-mode "js2" nil t)
-    (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))))
-(el-get-bundle json-mode)
-(el-get-bundle web-mode)
+;;(el-get-bundle js2-mode
+;;  (progn
+;;    (autoload 'js2-mode "js2" nil t)
+;;    (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))))
+;;(el-get-bundle json-mode)
+;;(el-get-bundle web-mode)
+
+;; python utilities
+(el-get-bundle elpy
+  (elpy-enable))
