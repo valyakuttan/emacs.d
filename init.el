@@ -56,5 +56,8 @@
 ;;(el-get-bundle web-mode)
 
 ;; python utilities
-(el-get-bundle elpy
-  (elpy-enable))
+;;(el-get-bundle elpy
+;;  (elpy-enable))
+
+;; golang utilities
+;;(el-get-bundle go-mode)

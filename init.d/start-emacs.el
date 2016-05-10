@@ -14,6 +14,11 @@
       `((".*" ,temporary-file-directory t))
       backup-directory-alist `((".*" . ,temporary-file-directory)))
 
+;; set utf-8 as default encoding
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+
 ;;
 ;; some useful initialization
 ;;

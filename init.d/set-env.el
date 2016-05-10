@@ -13,6 +13,7 @@
 ;; cabal-bin
 ;; node-bin)
 
+;; python virtual environment setup
 (setq work-on-home (concat home "/src/venv"))
 (setenv "WORKON_HOME" work-on-home)
 
