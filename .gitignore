@@ -3,6 +3,7 @@
 !.gitignore
 el-get/
 eshell/
+elpa/
 /ido.last
 /recentf
 /smex-items

@@ -24,3 +24,8 @@
 (with-eval-after-load 'flycheck
    (flycheck-add-mode 'javascript-eslint 'web-mode))
 
+;; disable rust-cargo
+(with-eval-after-load 'flycheck
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(rust-cargo))))

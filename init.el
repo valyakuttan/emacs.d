@@ -23,7 +23,7 @@
 ;; default set of packages to be installed
 
 ;; general utilities
-(el-get-bundle with-eval-after-load-feature)
+;;(el-get-bundle with-eval-after-load-feature)
 (el-get-bundle smex)
 (el-get-bundle flx (flx-ido-mode t))
 (el-get-bundle color-theme-zenburn
@@ -42,10 +42,7 @@
 
 ;; haskell utilities
 ;;(el-get-bundle haskell-mode)
-;;(el-get-bundle flycheck-haskell
-;;  (with-eval-after-load-feature 'flycheck
-;;    (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
-
+;;(el-get-bundle flycheck-haskell)
 
 ;; javascript utilities
 ;;(el-get-bundle js2-mode
@@ -61,3 +58,7 @@
 
 ;; golang utilities
 ;;(el-get-bundle go-mode)
+
+;; rust utilities
+(el-get-bundle rust-mode)
+(el-get-bundle flycheck-rust)
