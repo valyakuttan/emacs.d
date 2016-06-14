@@ -64,9 +64,5 @@
 ;; rust utilities
 (el-get-bundle rust-mode)
 (el-get-bundle cargo)
-(add-hook 'rust-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 (el-get-bundle toml-mode)
 (el-get-bundle flycheck-rust)
-(load-file "~/.emacs.d/el-get/flycheck-rust/flycheck-rust.el")
