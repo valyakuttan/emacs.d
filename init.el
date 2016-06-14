@@ -3,7 +3,6 @@
 ;; custom initialization
 (load-file "~/.emacs.d/init.d/start-emacs.el")
 (load-file "~/.emacs.d/init.d/ido-config.el")
-(load-file "~/.emacs.d/init.d/set-env.el")
 
 ;;
 ;; el-get
@@ -24,6 +23,9 @@
 
 ;; general utilities
 ;;(el-get-bundle with-eval-after-load-feature)
+(el-get-bundle exec-path-from-shell)
+(exec-path-from-shell-initialize)
+
 (el-get-bundle smex)
 (el-get-bundle flx (flx-ido-mode t))
 (el-get-bundle color-theme-zenburn
@@ -61,4 +63,10 @@
 
 ;; rust utilities
 (el-get-bundle rust-mode)
+(el-get-bundle cargo)
+(add-hook 'rust-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+(el-get-bundle toml-mode)
 (el-get-bundle flycheck-rust)
+(load-file "~/.emacs.d/el-get/flycheck-rust/flycheck-rust.el")
