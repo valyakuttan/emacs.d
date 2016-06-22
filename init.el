@@ -57,11 +57,8 @@
 (el-get-bundle cargo)
 
 (el-get-bundle flycheck-rust
-  :post-init
-  (eval-after-load 'flycheck
-    '(progn
-       (load-file "~/.emacs.d/el-get/flycheck-rust/flycheck-rust.el")
-       (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))))
+  :prepare
+  (load-file "~/.emacs.d/el-get/flycheck-rust/flycheck-rust.el"))
 
 (el-get-bundle toml-mode)
 
