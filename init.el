@@ -14,7 +14,7 @@
 
 ;;; Default set of packages to be installed
 ;;;
-;;; General utilities
+;;; Essential packages
 (el-get-bundle exec-path-from-shell
   :post-init (exec-path-from-shell-initialize))
 
@@ -33,6 +33,17 @@
     ;; This is your old M-x.
     (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)))
 
+;;; Initialize Emacs
+(el-get-bundle start-emacs-with-min-ui
+  :type github
+  :pkgname "valyakuttan/start-emacs-with-min-ui"
+  :depends (flx)
+  :post-init
+  (progn
+    (init-ido-mode)
+    (init-emacs)))
+
+;;; Extra utilities
 (el-get-bundle paredit
   :post-init (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
 
@@ -48,9 +59,10 @@
   :post-init (global-set-key (kbd "C-x g") 'magit-status))
 
 
-;;; AUCTeX
-;; Customary Customization, p. 1 and 16 in the manual,
-;; and http://www.emacswiki.org/emacs/AUCTeX#toc2
+;;; Latex support with AUCTeX and RefTeX
+;;;
+;;; Customary Customization, p. 1 and 16 in the manual,
+;;; and http://www.emacswiki.org/emacs/AUCTeX#toc2
 (el-get-bundle auctex
   :post-init
   (progn
@@ -60,21 +72,11 @@
     (setq TeX-PDF-mode t); PDF mode (rather than DVI-mode)
 
     (add-hook 'TeX-mode-hook
-              (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
+              (lambda () (TeX-fold-mode 1))) ; Automatically activate TeX-fold-mode.
 
-    ;; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
-    (add-hook 'TeX-mode-hook 'LaTeX-math-mode)))
+    (add-hook 'TeX-mode-hook 'LaTeX-math-mode))) ; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
 
-;; Turn on RefTeX for AUCTeX http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
+;;; Turn on RefTeX for AUCTeX
+;;; http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
 (el-get-bundle reftex
   :post-init (add-hook 'TeX-mode-hook 'turn-on-reftex))
-
-;;; Initialize Emacs
-(el-get-bundle start-emacs-with-min-ui
-  :type github
-  :pkgname "valyakuttan/start-emacs-with-min-ui"
-  :depends (flx)
-  :post-init
-  (progn
-    (init-ido-mode)
-    (init-emacs)))
