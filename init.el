@@ -38,29 +38,36 @@
 
 (el-get-bundle markdown-mode)
 
-;;; Developement utilities
-(el-get-bundle magit)
-
 (el-get-bundle rainbow-delimiters
   :post-init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (el-get-bundle flycheck
   :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
 
-;;; Rust programming
-(el-get-bundle rust-mode
+(el-get-bundle magit
+  :post-init (global-set-key (kbd "C-x g") 'magit-status))
+
+
+;;; AUCTeX
+;; Customary Customization, p. 1 and 16 in the manual,
+;; and http://www.emacswiki.org/emacs/AUCTeX#toc2
+(el-get-bundle auctex
   :post-init
-  (add-hook 'rust-mode-hook
-            (lambda ()
-              (local-set-key (kbd "C-c <tab>") #'rust-format-buffer))))
+  (progn
+    (setq TeX-parse-self t); Enable parse on load.
+    (setq TeX-auto-save t); Enable parse on save.
+    (setq-default TeX-master nil)
+    (setq TeX-PDF-mode t); PDF mode (rather than DVI-mode)
 
-(el-get-bundle cargo)
+    (add-hook 'TeX-mode-hook
+              (lambda () (TeX-fold-mode 1))); Automatically activate TeX-fold-mode.
 
-(el-get-bundle flycheck-rust
-  :prepare
-  (load-file "~/.emacs.d/el-get/flycheck-rust/flycheck-rust.el"))
+    ;; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
+    (add-hook 'TeX-mode-hook 'LaTeX-math-mode)))
 
-(el-get-bundle toml-mode)
+;; Turn on RefTeX for AUCTeX http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
+(el-get-bundle reftex
+  :post-init (add-hook 'TeX-mode-hook 'turn-on-reftex))
 
 ;;; Initialize Emacs
 (el-get-bundle start-emacs-with-min-ui
