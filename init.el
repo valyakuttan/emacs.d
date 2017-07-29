@@ -70,10 +70,9 @@
     (setq TeX-auto-save t); Enable parse on save.
     (setq-default TeX-master nil)
     (setq TeX-PDF-mode t); PDF mode (rather than DVI-mode)
-
     (add-hook 'TeX-mode-hook
-              (lambda () (TeX-fold-mode 1))) ; Automatically activate TeX-fold-mode.
-
+              (lambda () (TeX-fold-mode 1))) ; Automatically activate TeX-fold-mode
+    (add-hook 'LaTeX-mode-hook 'flyspell-mode) ; Automatically activate flyspell-mode
     (add-hook 'TeX-mode-hook 'LaTeX-math-mode))) ; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
 
 ;;; Turn on RefTeX for AUCTeX
