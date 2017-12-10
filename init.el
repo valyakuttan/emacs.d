@@ -3,6 +3,13 @@
 ;;; el-get
 ;;;
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
 
 (unless (require 'el-get nil 'noerror)
@@ -73,9 +80,18 @@
     (add-hook 'TeX-mode-hook
               (lambda () (TeX-fold-mode 1))) ; Automatically activate TeX-fold-mode
     (add-hook 'LaTeX-mode-hook 'flyspell-mode) ; Automatically activate flyspell-mode
-    (add-hook 'TeX-mode-hook 'LaTeX-math-mode))) ; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
+    (add-hook 'TeX-mode-hook 'LaTeX-math-mode) ; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
+    ))
 
 ;;; Turn on RefTeX for AUCTeX
 ;;; http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
 (el-get-bundle reftex
   :post-init (add-hook 'TeX-mode-hook 'turn-on-reftex))
+
+
+;;; Python support
+;;(el-get-bundle elpy
+;;  :post-init
+;;  (progn
+;;    (setq elpy-rpc-python-command "python3")
+;;    (elpy-enable)))
