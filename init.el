@@ -50,6 +50,9 @@
     (init-ido-mode)
     (init-emacs)))
 
+;;; Set font
+(set-default-font "Inconsolata 14")
+
 ;;; Extra utilities
 (el-get-bundle paredit
   :post-init (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
@@ -70,28 +73,32 @@
 ;;;
 ;;; Customary Customization, p. 1 and 16 in the manual,
 ;;; and http://www.emacswiki.org/emacs/AUCTeX#toc2
-(el-get-bundle auctex
-  :post-init
-  (progn
-    (setq TeX-parse-self t); Enable parse on load.
-    (setq TeX-auto-save t); Enable parse on save.
-    (setq-default TeX-master nil)
-    (setq TeX-PDF-mode t); PDF mode (rather than DVI-mode)
-    (add-hook 'TeX-mode-hook
-              (lambda () (TeX-fold-mode 1))) ; Automatically activate TeX-fold-mode
-    (add-hook 'LaTeX-mode-hook 'flyspell-mode) ; Automatically activate flyspell-mode
-    (add-hook 'TeX-mode-hook 'LaTeX-math-mode) ; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
-    ))
+;(el-get-bundle auctex
+;  :post-init
+;  (progn
+;    (setq TeX-parse-self t); Enable parse on load.
+;    (setq TeX-auto-save t); Enable parse on save.
+;    (setq-default TeX-master nil)
+;    (setq TeX-PDF-mode t); PDF mode (rather than DVI-mode)
+;    (add-hook 'TeX-mode-hook
+;       (lambda () (TeX-fold-mode 1)))
+        ;; Automatically activate TeX-fold-mode
+;       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+        ;; Automatically activate flyspell-mode
+;       (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
+        ;; LaTeX-math-mode
+        ;; http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
+;   ))
 
 ;;; Turn on RefTeX for AUCTeX
 ;;; http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
-(el-get-bundle reftex
-  :post-init (add-hook 'TeX-mode-hook 'turn-on-reftex))
+;(el-get-bundle reftex
+;  :post-init (add-hook 'TeX-mode-hook 'turn-on-reftex))
 
 
 ;;; Python support
-;;(el-get-bundle elpy
-;;  :post-init
-;;  (progn
-;;    (setq elpy-rpc-python-command "python3")
-;;    (elpy-enable)))
+(el-get-bundle elpy
+ :post-init
+ (progn
+   (setq elpy-rpc-python-command "python3")
+   (elpy-enable)))
