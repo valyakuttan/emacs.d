@@ -1,4 +1,4 @@
-;;; init.el
+;;; init.el --- emacs init file
 ;;;
 ;;; el-get
 ;;;
@@ -19,59 +19,87 @@
     (goto-char (point-max))
     (eval-print-last-sexp)))
 
+
+;;; Initialize emacs
+;;;
+;;; Initialize Emacs with minimum distractions.
+;;;
+;;;###autoload
+(defun init-emacs ()
+  (progn
+    (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
+      (when (fboundp mode) (funcall mode -1)))
+    (setq inhibit-startup-screen t)
+    (setq auto-save-file-name-transforms
+          `((".*" ,temporary-file-directory t))
+          backup-directory-alist
+          `((".*" . ,temporary-file-directory)))
+
+    ;; set utf-8 as default encoding
+    (prefer-coding-system 'utf-8)
+    (setq coding-system-for-read 'utf-8)
+    (setq coding-system-for-write 'utf-8)
+
+    ;;; Set font
+    (set-frame-font "Inconsolata 14")
+
+    (setq column-number-mode t) ;; enable column-number-mode
+    (global-hl-line-mode)	;; highlight current line
+    (setq scroll-step 1)    ;; keyboard scroll one line at a time
+    (setq-default indent-tabs-mode nil)))
+
+;; Rename both file and current buffer.
+;;;
+;;;###autoload
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
+
+(init-emacs)
+
+
 ;;; Default set of packages to be installed
 ;;;
 ;;; Essential packages
-(el-get-bundle exec-path-from-shell
-  :post-init (exec-path-from-shell-initialize))
-
 (el-get-bundle color-theme-zenburn
   :post-init (load-theme 'zenburn t))
 
-(el-get-bundle flx
-  :post-init (flx-ido-mode t))
-
-(el-get-bundle smex
+(el-get-bundle helm
   :post-init
-  (progn
-    (smex-initialize)
-    (global-set-key (kbd "M-x") 'smex)
-    (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-    ;; This is your old M-x.
-    (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)))
-
-;;; Initialize Emacs
-(el-get-bundle start-emacs-with-min-ui
-  :type github
-  :pkgname "valyakuttan/start-emacs-with-min-ui"
-  :depends (flx)
-  :post-init
-  (progn
-    (init-ido-mode)
-    (init-emacs)))
-
-;;; Set font
-(set-default-font "Inconsolata 14")
+  (with-eval-after-load "helm"
+    (progn
+      (require 'helm-config)
+      (define-key helm-map (kbd "<tab>")
+        'helm-execute-persistent-action) ;; rebind tab to run
+                                         ;; persistent action
+      (global-set-key (kbd "M-x") 'helm-M-x)
+      (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching
+                                    ;;for helm-M-x
+      (helm-mode t))))
 
 ;;; Extra utilities
 (el-get-bundle paredit
   :post-init (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
-
 (el-get-bundle markdown-mode)
-
 (el-get-bundle rainbow-delimiters
   :post-init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
 (el-get-bundle company-mode
   :post-init (add-hook 'prog-mode-hook #'company-mode))
-
 (el-get-bundle flycheck
   :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
-
 (el-get-bundle magit
   :post-init (global-set-key (kbd "C-x g") 'magit-status))
-
-;;; project management
 (el-get-bundle projectile
   :post-init
   (progn
@@ -79,34 +107,6 @@
     (with-eval-after-load "projectile"
       (define-key projectile-mode-map (kbd "C-p")
       'projectile-command-map))))
-
-;;;     
-
-;;; Latex support with AUCTeX and RefTeX
-;;;
-;;; Customary Customization, p. 1 and 16 in the manual,
-;;; and http://www.emacswiki.org/emacs/AUCTeX#toc2
-;(el-get-bundle auctex
-;  :post-init
-;  (progn
-;    (setq TeX-parse-self t); Enable parse on load.
-;    (setq TeX-auto-save t); Enable parse on save.
-;    (setq-default TeX-master nil)
-;    (setq TeX-PDF-mode t); PDF mode (rather than DVI-mode)
-;    (add-hook 'TeX-mode-hook
-;       (lambda () (TeX-fold-mode 1)))
-        ;; Automatically activate TeX-fold-mode
-;       (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-        ;; Automatically activate flyspell-mode
-;       (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
-        ;; LaTeX-math-mode
-        ;; http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
-;   ))
-
-;;; Turn on RefTeX for AUCTeX
-;;; http://www.gnu.org/s/auctex/manual/reftex/reftex_5.html
-;(el-get-bundle reftex
-;  :post-init (add-hook 'TeX-mode-hook 'turn-on-reftex))
 
 
 ;;; Python support
