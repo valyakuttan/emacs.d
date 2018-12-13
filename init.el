@@ -62,12 +62,25 @@
 (el-get-bundle rainbow-delimiters
   :post-init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
+(el-get-bundle company-mode
+  :post-init (add-hook 'prog-mode-hook #'company-mode))
+
 (el-get-bundle flycheck
   :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
 
 (el-get-bundle magit
   :post-init (global-set-key (kbd "C-x g") 'magit-status))
 
+;;; project management
+(el-get-bundle projectile
+  :post-init
+  (progn
+    (add-hook 'prog-mode-hook #'projectile-mode)
+    (with-eval-after-load "projectile"
+      (define-key projectile-mode-map (kbd "C-p")
+      'projectile-command-map))))
+
+;;;     
 
 ;;; Latex support with AUCTeX and RefTeX
 ;;;
@@ -102,3 +115,10 @@
  (progn
    (setq elpy-rpc-python-command "python3")
    (elpy-enable)))
+
+
+;;; c/c++ support
+(el-get-bundle company-c-headers
+  :post-init
+  (progn
+    (add-to-list 'company-backends 'company-c-headers)))

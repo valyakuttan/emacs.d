@@ -1,6 +1,7 @@
 .*
 *~
 !.gitignore
+projectile*
 el-get/
 eshell/
 elpa/
