@@ -84,9 +84,9 @@
         'helm-execute-persistent-action) ;; rebind tab to run
                                          ;; persistent action
       (global-set-key (kbd "M-x") 'helm-M-x)
-      (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching
-                                    ;;for helm-M-x
-      (helm-mode t))))
+      (setq helm-M-x-fuzzy-match t))))
+
+(helm-mode t)
 
 ;;; Extra utilities
 (el-get-bundle paredit
@@ -113,12 +113,17 @@
 (el-get-bundle elpy
  :post-init
  (progn
-   (setq elpy-rpc-python-command "python3")
    (elpy-enable)))
-
+(el-get-bundle company-anaconda
+  :post-init
+  (progn
+    (eval-after-load "company"
+      '(add-to-list 'company-backends 'company-anaconda))
+    (add-hook 'python-mode-hook 'anaconda-mode)))
 
 ;;; c/c++ support
 (el-get-bundle company-c-headers
   :post-init
   (progn
-    (add-to-list 'company-backends 'company-c-headers)))
+    (eval-after-load "company"
+      '(add-to-list 'company-backends 'company-c-headers))))
