@@ -5,8 +5,10 @@
 
 
 ;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
+;; installed packages.  Don't delete this line.  If you don't
+;; want it,
+;; just comment it out by adding a semicolon to the start of the
+;; line.
 ;; You may delete these explanatory comments.
 (package-initialize)
 
@@ -19,10 +21,10 @@
     (goto-char (point-max))
     (eval-print-last-sexp)))
 
-;;; initialize emacs
-(add-to-list 'load-path "~/.emacs.d/min-ui/")
-(require 'min-ui)
-(init-emacs)
+
+;;; Initialize emacs
+(el-get-bundle valyakuttan/start-emacs-with-min-ui
+  :post-init (init-emacs))
 
 
 ;;; Default set of packages to be installed
@@ -33,31 +35,36 @@
 
 (el-get-bundle helm
   :post-init
-  (with-eval-after-load "helm"
-    (progn
-      (require 'helm-config)
-      (define-key helm-map (kbd "<tab>")
-        'helm-execute-persistent-action) ;; rebind tab to run
-                                         ;; persistent action
-      (global-set-key (kbd "M-x") 'helm-M-x)
-      (setq helm-M-x-fuzzy-match t))))
+  (progn
+    (with-eval-after-load "helm"
+      (progn
+        (require 'helm-config)
+        (define-key helm-map (kbd "<tab>")
+          'helm-execute-persistent-action) ;; rebind tab to run
+                                           ;; persistent action
+        (global-set-key (kbd "M-x") 'helm-M-x)
+        (setq helm-M-x-fuzzy-match t)))
+    (helm-mode t)))
 
-(helm-mode t)
-
-;;; Extra utilities
 (el-get-bundle paredit
   :post-init
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
+
 (el-get-bundle markdown-mode)
+
 (el-get-bundle rainbow-delimiters
   :post-init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
 (el-get-bundle company-mode
   :post-init (add-hook 'prog-mode-hook #'company-mode))
+
 (el-get-bundle flycheck
   :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
+
 (el-get-bundle magit
   :post-init (global-set-key (kbd "C-x g") 'magit-status))
+
 (el-get-bundle projectile
   :post-init
   (progn
@@ -72,6 +79,7 @@
  :post-init
  (progn
    (elpy-enable)))
+
 (el-get-bundle company-anaconda
   :post-init
   (progn
