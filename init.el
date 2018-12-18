@@ -1,17 +1,17 @@
-;;; init.el --- emacs init file
-;;;
-;;; el-get
-;;;
+;;; init.el --- Emacs startup configuration.
+;;
 
+;;; Commentary:
+;;
+;; el-get config info for Emacs startup
+;;
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't
-;; want it,
-;; just comment it out by adding a semicolon to the start of the
-;; line.
-;; You may delete these explanatory comments.
+;;; Code:
+
+;;
+;; el-get initialization
+;;
 (package-initialize)
-
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
 
 (unless (require 'el-get nil 'noerror)
@@ -21,15 +21,15 @@
     (goto-char (point-max))
     (eval-print-last-sexp)))
 
-
-;;; Initialize emacs
+;;
+;; essential packages
+;;
 (el-get-bundle valyakuttan/start-emacs-with-min-ui
   :post-init (init-emacs))
 
+(el-get-bundle exec-path-from-shell
+  :post-init (exec-path-from-shell-initialize))
 
-;;; Default set of packages to be installed
-;;;
-;;; Essential packages
 (el-get-bundle color-theme-zenburn
   :post-init (load-theme 'zenburn t))
 
@@ -37,13 +37,12 @@
   :post-init
   (progn
     (with-eval-after-load "helm"
-      (progn
-        (require 'helm-config)
-        (define-key helm-map (kbd "<tab>")
-          'helm-execute-persistent-action) ;; rebind tab to run
-                                           ;; persistent action
-        (global-set-key (kbd "M-x") 'helm-M-x)
-        (setq helm-M-x-fuzzy-match t)))
+      (require 'helm-config)
+      (define-key helm-map (kbd "<tab>")
+        ;; rebind tab to run persistent action
+        'helm-execute-persistent-action)
+      (global-set-key (kbd "M-x") 'helm-M-x)
+      (setq helm-M-x-fuzzy-match t))
     (helm-mode t)))
 
 (el-get-bundle paredit
@@ -67,29 +66,27 @@
 
 (el-get-bundle projectile
   :post-init
-  (progn
+  (with-eval-after-load "projectile"
     (add-hook 'prog-mode-hook #'projectile-mode)
-    (with-eval-after-load "projectile"
-      (define-key projectile-mode-map (kbd "C-p")
-      'projectile-command-map))))
+    (define-key projectile-mode-map (kbd "C-p")
+      'projectile-command-map)))
 
-
-;;; Python support
+;;
+;; python development
+;;
 (el-get-bundle elpy
- :post-init
- (progn
-   (elpy-enable)))
+ :post-init (elpy-enable))
 
 (el-get-bundle company-anaconda
   :post-init
-  (progn
-    (eval-after-load "company"
-      '(add-to-list 'company-backends 'company-anaconda))
-    (add-hook 'python-mode-hook 'anaconda-mode)))
+  (with-eval-after-load "company"
+    (add-to-list 'company-backends 'company-anaconda)
+    (add-hook 'python-mode-hook #'anaconda-mode)))
 
-;;; c/c++ support
+;;
+;; c/c++ development
+;;
 (el-get-bundle company-c-headers
   :post-init
-  (progn
-    (eval-after-load "company"
-      '(add-to-list 'company-backends 'company-c-headers))))
+  (with-eval-after-load "company"
+    (add-to-list 'company-backends 'company-c-headers)))
