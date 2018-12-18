@@ -90,3 +90,6 @@
   :post-init
   (with-eval-after-load "company"
     (add-to-list 'company-backends 'company-c-headers)))
+
+(provide 'init)
+;;; init.el ends here
