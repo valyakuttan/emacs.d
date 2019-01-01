@@ -49,14 +49,20 @@
   :post-init
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
 
+(el-get-bundle clean-aindent
+  :post-init (add-hook 'prog-mode-hook #'clean-aindent-mode))
+
 (el-get-bundle markdown-mode)
 
 (el-get-bundle rainbow-delimiters
-  :post-init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :post-init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (el-get-bundle company-mode
-  :post-init (add-hook 'prog-mode-hook #'company-mode))
+  :post-init
+  (with-eval-after-load "company"
+    (setq company-backends
+          (delete 'company-semantic company-backends))
+    (add-hook 'prog-mode-hook #'company-mode)))
 
 (el-get-bundle flycheck
   :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
