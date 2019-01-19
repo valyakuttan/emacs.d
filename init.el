@@ -59,13 +59,11 @@
 
 (el-get-bundle company-mode
   :post-init
-  (with-eval-after-load "company"
-    (setq company-backends
-          (delete 'company-semantic company-backends))
-    (add-hook 'prog-mode-hook #'company-mode)))
+  (add-hook 'prog-mode-hook #'company-mode))
 
 (el-get-bundle flycheck
-  :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
+  :post-init
+  (add-hook 'prog-mode-hook #'flycheck-mode))
 
 (el-get-bundle magit
   :post-init (global-set-key (kbd "C-x g") 'magit-status))
@@ -95,7 +93,22 @@
 (el-get-bundle company-c-headers
   :post-init
   (with-eval-after-load "company"
+    (setq company-backends
+          (delete 'company-semantic company-backends))
     (add-to-list 'company-backends 'company-c-headers)))
+
+;;
+;; javascript development
+;;
+(el-get-bundle rjsx-mode
+  :post-init
+    (progn
+    (with-eval-after-load "flycheck"
+      (setq-default flycheck-disabled-checkers
+                    (append flycheck-disabled-checkers
+                            '(javascript-jshint json-jsonlist))))
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))))
+
 
 (provide 'init)
 ;;; init.el ends here
