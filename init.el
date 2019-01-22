@@ -100,15 +100,22 @@
 ;;
 ;; javascript development
 ;;
-(el-get-bundle rjsx-mode
+(el-get-bundle js2-mode
   :post-init
-    (progn
-    (with-eval-after-load "flycheck"
-      (setq-default flycheck-disabled-checkers
-                    (append flycheck-disabled-checkers
-                            '(javascript-jshint json-jsonlist))))
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))))
+  (progn
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+    (with-eval-after-load "js2-mode"
+      ;; Better imenu
+      (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))))
 
+(el-get-bundle js2-refactor
+  :post-init
+  (with-eval-after-load "js2-mode"
+    (add-hook 'js2-mode-hook #'js2-refactor-mode)
+    (js2r-add-keybindings-with-prefix "C-c C-r")
+    (define-key js2-mode-map (kbd "C-k") #'js2r-kill)))
+
+(el-get-bundle rjsx-mode)
 
 (provide 'init)
 ;;; init.el ends here
