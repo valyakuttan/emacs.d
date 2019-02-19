@@ -70,10 +70,11 @@
 
 (el-get-bundle projectile
   :post-init
-  (with-eval-after-load "projectile"
+  (progn
     (add-hook 'prog-mode-hook #'projectile-mode)
-    (define-key projectile-mode-map (kbd "C-p")
-      'projectile-command-map)))
+    (with-eval-after-load "projectile"
+      (define-key projectile-mode-map (kbd "C-p")
+        'projectile-command-map))))
 
 ;;
 ;; python development
@@ -83,9 +84,10 @@
 
 (el-get-bundle company-anaconda
   :post-init
-  (with-eval-after-load "company"
-    (add-to-list 'company-backends 'company-anaconda)
-    (add-hook 'python-mode-hook #'anaconda-mode)))
+  (progn
+    (add-hook 'python-mode-hook #'anaconda-mode)
+    (with-eval-after-load "company"
+      (add-to-list 'company-backends 'company-anaconda))))
 
 ;;
 ;; c/c++ development
@@ -102,20 +104,21 @@
 ;;
 (el-get-bundle js2-mode
   :post-init
-  (progn
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-    (with-eval-after-load "js2-mode"
-      ;; Better imenu
-      (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))))
+  (with-eval-after-load "js2-mode"
+      (js2-imenu-extras-mode t)
+      (setq js2-basic-offset 2)
+      (setq js2-strict-missing-semi-warning nil)))
 
 (el-get-bundle js2-refactor
   :post-init
   (with-eval-after-load "js2-mode"
-    (add-hook 'js2-mode-hook #'js2-refactor-mode)
+    (js2-refactor-mode)
     (js2r-add-keybindings-with-prefix "C-c C-r")
     (define-key js2-mode-map (kbd "C-k") #'js2r-kill)))
 
-(el-get-bundle rjsx-mode)
+(el-get-bundle rjsx-mode
+  :post-init
+  (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode)))
 
 (provide 'init)
 ;;; init.el ends here
