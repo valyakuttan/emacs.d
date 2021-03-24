@@ -27,9 +27,17 @@
   :post-init (init-emacs))
 
 
+;;; Set font
+(set-frame-font "Inconsolata 14")
+
+
 ;;; Default set of packages to be installed
 ;;;
 ;;; Essential packages
+(el-get-bundle exec-path-from-shell
+  :post-init (when (memq window-system '(mac ns x))
+               (exec-path-from-shell-initialize)))
+
 (el-get-bundle color-theme-zenburn
   :post-init (load-theme 'zenburn t))
 
@@ -43,6 +51,7 @@
           'helm-execute-persistent-action) ;; rebind tab to run
                                            ;; persistent action
         (global-set-key (kbd "M-x") 'helm-M-x)
+        (global-set-key (kbd "C-x C-f") 'helm-find-files)
         (setq helm-M-x-fuzzy-match t)))
     (helm-mode t)))
 
@@ -56,40 +65,50 @@
   :post-init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-(el-get-bundle company-mode
-  :post-init (add-hook 'prog-mode-hook #'company-mode))
-
-(el-get-bundle flycheck
-  :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
-
 (el-get-bundle magit
   :post-init (global-set-key (kbd "C-x g") 'magit-status))
 
-(el-get-bundle projectile
+(el-get-bundle company-mode
   :post-init
-  (progn
-    (add-hook 'prog-mode-hook #'projectile-mode)
-    (with-eval-after-load "projectile"
-      (define-key projectile-mode-map (kbd "C-p")
-      'projectile-command-map))))
+  (setq company-tooltip-align-annotations t
+        company-idle-delay 0.2
+        ;; min prefix of 2 chars
+        company-minimum-prefix-length 2
+        company-require-match nil)
+  (add-hook 'prog-mode-hook #'company-mode))
 
+(el-get-bundle flycheck
+  :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
 
 ;;; Python support
 (el-get-bundle elpy
  :post-init
  (progn
+   (setq python-shell-interpreter "pipenv"
+         python-shell-interpreter-args "run python"
+         python-shell-prompt-detect-failure-warning nil)
+   (setq elpy-rpc-backend "jedi")
+   (setq elpy-shell-starting-directory 'current-directory)
+   (setq python-indent-offset 4)
+   (with-eval-after-load "python"
+     '(add-to-list 'auto-mode-alist '("\\.py$" . python-mode)))
    (elpy-enable)))
 
-(el-get-bundle company-anaconda
+(el-get-bundle elpa:jedi-core)
+(el-get-bundle company-jedi
+  :depends (company-mode)
   :post-init
   (progn
-    (eval-after-load "company"
-      '(add-to-list 'company-backends 'company-anaconda))
-    (add-hook 'python-mode-hook 'anaconda-mode)))
+    (defun enable-jedi()
+      (setq-local company-backends
+                  (append '(company-jedi) company-backends)))
+    (with-eval-after-load "company"
+      (add-hook 'python-mode-hook 'enable-jedi))))
+
 
 ;;; c/c++ support
 (el-get-bundle company-c-headers
   :post-init
   (progn
-    (eval-after-load "company"
+    (with-eval-after-load "company"
       '(add-to-list 'company-backends 'company-c-headers))))

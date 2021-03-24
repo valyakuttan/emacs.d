@@ -3,6 +3,8 @@
 !.gitignore
 projectile*
 el-get/
+elpy/
+transient/
 eshell/
 elpa/
 /ido.last
