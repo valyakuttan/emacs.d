@@ -16,3 +16,4 @@ elpa/
 
 # Packaging
 .cask
+/*.data

@@ -14,6 +14,9 @@
 
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
 
+;; location of customized modes
+(add-to-list 'load-path (locate-user-emacs-file "custom-modes"))
+
 (unless (require 'el-get nil 'noerror)
   (with-current-buffer
       (url-retrieve-synchronously
@@ -55,11 +58,20 @@
         (setq helm-M-x-fuzzy-match t)))
     (helm-mode t)))
 
+(el-get-bundle projectile
+  :post-init
+  (progn
+    (with-eval-after-load "projectile"
+      (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+    (projectile-mode +1)))
+
+(el-get-bundle helm-projectile
+  :post-init (helm-projectile-on))
+
 (el-get-bundle paredit
   :post-init
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
-
-(el-get-bundle markdown-mode)
 
 (el-get-bundle rainbow-delimiters
   :post-init
@@ -80,35 +92,11 @@
 (el-get-bundle flycheck
   :post-init (add-hook 'prog-mode-hook #'flycheck-mode))
 
-;;; Python support
-(el-get-bundle elpy
- :post-init
- (progn
-   (setq python-shell-interpreter "pipenv"
-         python-shell-interpreter-args "run python"
-         python-shell-prompt-detect-failure-warning nil)
-   (setq elpy-rpc-backend "jedi")
-   (setq elpy-shell-starting-directory 'current-directory)
-   (setq python-indent-offset 4)
-   (with-eval-after-load "python"
-     '(add-to-list 'auto-mode-alist '("\\.py$" . python-mode)))
-   (elpy-enable)))
+;; customized python mode
+(load  "custom-python")
 
-(el-get-bundle elpa:jedi-core)
-(el-get-bundle company-jedi
-  :depends (company-mode)
-  :post-init
-  (progn
-    (defun enable-jedi()
-      (setq-local company-backends
-                  (append '(company-jedi) company-backends)))
-    (with-eval-after-load "company"
-      (add-hook 'python-mode-hook 'enable-jedi))))
+;; customized latex
+(load  "custom-latex")
 
-
-;;; c/c++ support
-(el-get-bundle company-c-headers
-  :post-init
-  (progn
-    (with-eval-after-load "company"
-      '(add-to-list 'company-backends 'company-c-headers))))
+;; customized markdown
+(load  "custom-markdown")
