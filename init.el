@@ -136,6 +136,16 @@
   :post-init (global-set-key (kbd "C-x g") 'magit-status))
 
 
+(el-get-bundle yasnippet
+  :post-init
+  (with-eval-after-load "yasnippet"
+    (yas-reload-all)
+    (add-hook 'prog-mode-hook #'yas-minor-mode)))
+
+
+(el-get-bundle yasnippet-snippets)
+
+
 ;; customized python mode
 (load  "custom-cmode")
 
