@@ -57,18 +57,17 @@
 
 (el-get-bundle helm
   :post-init
-  (progn
-    (with-eval-after-load "helm"
-      (progn
-        (require 'helm-config)
-        (define-key helm-map (kbd "<tab>")
-          'helm-execute-persistent-action) ;; rebind tab to run
-                                           ;; persistent action
-        (global-set-key (kbd "M-x") 'helm-M-x)
-        (global-set-key (kbd "C-x C-f") 'helm-find-files)
-        (setq helm-M-x-fuzzy-match t)
-        (setq helm-ff-file-name-history-use-recentf t))
-      (helm-mode t))))
+  (with-eval-after-load "helm"
+    (progn
+      (require 'helm-config)
+      (define-key helm-map (kbd "<tab>")
+        'helm-execute-persistent-action) ;; rebind tab to run
+                                         ;; persistent action
+      (global-set-key (kbd "M-x") 'helm-M-x)
+      (global-set-key (kbd "C-x C-f") 'helm-find-files)
+      (setq helm-M-x-fuzzy-match t)
+      (setq helm-ff-file-name-history-use-recentf t))))
+(helm-mode t)
 
 
 (el-get-bundle flycheck
@@ -85,24 +84,24 @@
 
 (el-get-bundle company-mode
   :post-init
-  (progn
-    (with-eval-after-load "company"
-      (setq company-tooltip-align-annotations t
-            company-idle-delay 0.2
-            ;; min prefix of 2 chars
-            company-minimum-prefix-length 3
-            company-require-match nil))
+  (with-eval-after-load "company"
+    (progn
+    (setq company-tooltip-align-annotations t
+          company-idle-delay 0.2
+          ;; min prefix of 2 chars
+          company-minimum-prefix-length 3
+          company-require-match nil)
     (global-set-key (kbd "C-c y") 'company-yasnippet)
-    (add-hook 'prog-mode-hook #'global-company-mode)))
+    (add-hook 'prog-mode-hook #'global-company-mode))))
 
 
 (el-get-bundle projectile
   :post-init
-  (progn
-    (with-eval-after-load "projectile"
-      (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-    (projectile-mode +1)))
+  (with-eval-after-load "projectile"
+    (progn
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1))))
 
 
 (el-get-bundle paredit
@@ -122,8 +121,9 @@
 (el-get-bundle yasnippet
   :post-init
   (with-eval-after-load "yasnippet"
-    (yas-reload-all)
-    (add-hook 'prog-mode-hook #'yas-minor-mode)))
+    (progn
+      (yas-reload-all)
+      (add-hook 'prog-mode-hook #'yas-minor-mode))))
 
 
 (el-get-bundle yasnippet-snippets)
