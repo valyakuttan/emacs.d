@@ -83,12 +83,6 @@
     (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)))
 
 
-(el-get-bundle helm-c-flycheck
-  :post-init
-  (with-eval-after-load "flycheck"
-    (define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck)))
-
-
 (el-get-bundle company-mode
   :post-init
   (progn
@@ -98,15 +92,8 @@
             ;; min prefix of 2 chars
             company-minimum-prefix-length 3
             company-require-match nil))
+    (global-set-key (kbd "C-c y") 'company-yasnippet)
     (add-hook 'prog-mode-hook #'global-company-mode)))
-
-
-(el-get-bundle helm-company
-  :post-init
-  (progn
-    (with-eval-after-load "company"
-      (define-key company-mode-map (kbd "C-:") 'helm-company)
-      (define-key company-active-map (kbd "C-:") 'helm-company))))
 
 
 (el-get-bundle projectile
@@ -116,10 +103,6 @@
       (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
       (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
     (projectile-mode +1)))
-
-
-(el-get-bundle helm-projectile
-  :post-init (helm-projectile-on))
 
 
 (el-get-bundle paredit
@@ -153,11 +136,14 @@
 ;; customized python mode
 (load  "custom-python")
 
+
 ;; customized latex
 ;;(load  "custom-latex")
 
 ;; customized markdown
 (load  "custom-markdown")
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
