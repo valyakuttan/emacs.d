@@ -32,6 +32,8 @@
         (add-to-list 'TeX-view-program-list
                      '("Evince" "/usr/bin/evince --page-index=%(outpage) %o"))
         (setq TeX-view-program-selection '((output-pdf "Evince")))))))
+
+
 (el-get-bundle auctex-latexmk
   :post-init
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)

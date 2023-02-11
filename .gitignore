@@ -2,6 +2,7 @@
 *~
 !.gitignore
 projectile*
+tramp
 el-get/
 elpy/
 transient/
@@ -10,7 +11,6 @@ elpa/
 /ido.last
 /recentf
 /smex-items
-
 # Compiled
 *.elc
 

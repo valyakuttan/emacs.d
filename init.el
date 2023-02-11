@@ -57,23 +57,30 @@
 
 (el-get-bundle helm
   :post-init
-  (with-eval-after-load "helm"
+  (progn
+    (with-eval-after-load "helm"
     (progn
-      (require 'helm-config)
       (define-key helm-map (kbd "<tab>")
         'helm-execute-persistent-action) ;; rebind tab to run
                                          ;; persistent action
       (global-set-key (kbd "M-x") 'helm-M-x)
       (global-set-key (kbd "C-x C-f") 'helm-find-files)
       (setq helm-M-x-fuzzy-match t)
-      (setq helm-ff-file-name-history-use-recentf t))))
-(helm-mode t)
+      (setq helm-ff-file-name-history-use-recentf t)))
+    (helm-mode t)))
+
 
 
 (el-get-bundle flycheck
   :post-init
   (progn
     (add-hook 'prog-mode-hook #'flycheck-mode)))
+
+
+(el-get-bundle helm-c-flycheck
+  :post-init
+  (with-eval-after-load "flycheck"
+    (define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck)))
 
 
 (el-get-bundle flycheck-color-mode-line
@@ -89,19 +96,27 @@
     (setq company-tooltip-align-annotations t
           company-idle-delay 0.2
           ;; min prefix of 2 chars
-          company-minimum-prefix-length 3
+          company-minimum-prefix-length 2
           company-require-match nil)
     (global-set-key (kbd "C-c y") 'company-yasnippet)
     (add-hook 'prog-mode-hook #'global-company-mode))))
 
 
+(el-get-bundle helm-company
+  (with-eval-after-load "company"
+    (progn
+      (define-key company-mode-map (kbd "C-:") 'helm-company)
+      (define-key company-active-map (kbd "C-:") 'helm-company))))
+
+
 (el-get-bundle projectile
   :post-init
-  (with-eval-after-load "projectile"
+  (progn
+    (with-eval-after-load "projectile"
     (progn
     (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-    (projectile-mode +1))))
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+    (projectile-mode t)))
 
 
 (el-get-bundle paredit
@@ -141,18 +156,4 @@
 ;;(load  "custom-latex")
 
 ;; customized markdown
-(load  "custom-markdown")
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(compat)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;(load  "custom-markdown")
